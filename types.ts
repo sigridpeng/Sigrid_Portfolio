@@ -12,4 +12,5 @@ export interface Project {
   category: Category;
   imageUrl: string;
   tags: string[];
+  url?: string;
 }

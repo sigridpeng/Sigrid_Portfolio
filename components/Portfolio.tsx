@@ -24,8 +24,9 @@ const Portfolio: React.FC = () => {
       <div className="mb-16 text-center">
         <h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-4 neon-text-purple">精選作品</h2>
         <div className="w-24 h-1 bg-purple-600 mx-auto rounded-full"></div>
-        <p className="mt-6 text-slate-400 max-w-xl mx-auto">
-          每一項作品都是對互動邊界的探索。從空間配置到代碼架構，我追求極致的體驗細節。
+        <p className="mt-6 text-slate-400 max-w-xl mx-auto leading-relaxed">
+          我的作品涵蓋行動應用、互動遊戲與敘事系統。<br />
+          不僅追求功能實現，也關注體驗流暢與架構彈性。
         </p>
       </div>
 
@@ -73,21 +74,32 @@ const Portfolio: React.FC = () => {
               <h3 className="text-xl font-bold text-slate-100 group-hover:text-purple-400 transition-colors font-orbitron">
                 {project.title}
               </h3>
-              <p className="text-slate-400 text-sm leading-relaxed line-clamp-2">
+              <p className="text-slate-400 text-sm leading-relaxed line-clamp-3">
                 {project.description}
               </p>
               
               <div className="flex flex-wrap gap-2">
                 {project.tags.map(tag => (
-                  <span key={tag} className="text-[10px] text-slate-500 uppercase tracking-tighter">#{tag}</span>
+                  <span key={tag} className="text-[10px] px-2 py-0.5 bg-slate-800 text-slate-400 rounded uppercase tracking-tighter border border-slate-700">#{tag}</span>
                 ))}
               </div>
 
               <div className="pt-4 flex items-center justify-between">
-                <button className="text-sm font-bold text-cyan-400 hover:text-cyan-300 flex items-center gap-1 transition-colors group/btn">
-                  查看詳情
-                  <ExternalLink size={14} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
-                </button>
+                {project.url ? (
+                  <a 
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-bold text-cyan-400 hover:text-cyan-300 flex items-center gap-1 transition-colors group/btn"
+                  >
+                    查看詳情
+                    <ExternalLink size={14} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                  </a>
+                ) : (
+                  <button className="text-sm font-bold text-slate-500 flex items-center gap-1 cursor-default opacity-50">
+                    即將推出
+                  </button>
+                )}
               </div>
             </div>
 

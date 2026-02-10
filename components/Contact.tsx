@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { Mail, Github, Linkedin, Send, Copy, Check } from 'lucide-react';
+import { Mail, Github, Send, Copy, Check } from 'lucide-react';
 
 const Contact: React.FC = () => {
-  const email = "sigridpeng@gmail.com";
+  const email = "sigridpeng.dev@gmail.com";
   const [copied, setCopied] = React.useState(false);
 
   const copyToClipboard = () => {
@@ -13,8 +13,7 @@ const Contact: React.FC = () => {
   };
 
   const socials = [
-    { icon: <Github size={24} />, label: 'GitHub', url: '#', color: 'hover:text-slate-100' },
-    { icon: <Linkedin size={24} />, label: 'LinkedIn', url: '#', color: 'hover:text-blue-400' },
+    { icon: <Github size={24} />, label: 'GitHub', url: 'https://github.com/sigridpeng', color: 'hover:text-slate-100' },
     { icon: <Mail size={24} />, label: 'Email', url: `mailto:${email}`, color: 'hover:text-cyan-400' },
   ];
 
@@ -52,11 +51,13 @@ const Contact: React.FC = () => {
 
         <div className="pt-8 space-y-6">
           <p className="text-sm font-orbitron text-slate-500 tracking-widest uppercase font-bold">Follow The Path</p>
-          <div className="flex justify-center gap-8">
+          <div className="flex justify-center gap-10">
             {socials.map((social, idx) => (
               <a 
                 key={idx}
                 href={social.url}
+                target={social.url.startsWith('http') ? "_blank" : undefined}
+                rel={social.url.startsWith('http') ? "noopener noreferrer" : undefined}
                 className={`text-slate-500 transition-all duration-300 transform hover:scale-125 ${social.color}`}
                 aria-label={social.label}
               >

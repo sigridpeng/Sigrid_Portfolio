@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -12,7 +11,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['home', 'portfolio', 'about', 'contact'];
-      const scrollPosition = window.scrollY + 150; // Increased offset for better detection
+      const scrollPosition = window.scrollY + 150;
 
       for (const section of sections) {
         const element = document.getElementById(section);

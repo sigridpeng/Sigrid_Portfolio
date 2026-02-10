@@ -1,8 +1,13 @@
 
-import React from 'react';
-import { ChevronDown, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronDown, Sparkles, RefreshCw, Loader2 } from 'lucide-react';
+import { GoogleGenAI } from '@google/genai';
 
 const Hero: React.FC = () => {
+  // Updated initial state to the user provided image URL
+  const [avatarUrl, setAvatarUrl] = useState('https://media.cake.me/image/upload/s--psgFJFLc--/c_fill,g_face,h_300,w_300/v1667312104/ykeypc13aeu28qk3uwcw.jpg');
+  const [isGenerating, setIsGenerating] = useState(false);
+
   const scrollToPortfolio = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const element = document.getElementById('portfolio');
@@ -11,6 +16,40 @@ const Hero: React.FC = () => {
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
       window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    }
+  };
+
+  const generateAIAvatar = async () => {
+    setIsGenerating(true);
+    try {
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash-image',
+        contents: {
+          parts: [
+            {
+              text: 'An elegant and minimalist artistic silhouette portrait of a woman with long hair and wearing glasses. The silhouette is a deep dark shape, set against a vibrant, glowing neon purple and cyan background with soft cinematic lighting. Vector-inspired professional style, clean lines, high detail, 1:1 aspect ratio, high resolution.',
+            },
+          ],
+        },
+        config: {
+          imageConfig: {
+            aspectRatio: "1:1"
+          }
+        }
+      });
+
+      for (const part of response.candidates?.[0]?.content?.parts || []) {
+        if (part.inlineData) {
+          const base64Data = part.inlineData.data;
+          setAvatarUrl(`data:image/png;base64,${base64Data}`);
+          break;
+        }
+      }
+    } catch (error) {
+      console.error('Failed to generate avatar:', error);
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -24,16 +63,13 @@ const Hero: React.FC = () => {
 
       <div className="text-center max-w-4xl mx-auto space-y-6">
         {/* Avatar Area */}
-        <div className="relative inline-block mb-4">
-          <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-2 border-cyan-500/50 p-1 bg-slate-900/50 shadow-[0_0_20px_rgba(34,211,238,0.3)]">
+        <div className="relative inline-block mb-4 group">
+          <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-2 border-cyan-500/50 p-1 bg-slate-900/50 shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-transform duration-500 group-hover:scale-105">
             <img 
-              src="https://picsum.photos/seed/sigrid/400/400" 
-              alt="Sigrid Peng Avatar" 
-              className="w-full h-full object-cover rounded-full grayscale hover:grayscale-0 transition-all duration-500"
+              src={avatarUrl} 
+              alt="Sigrid Peng Profile" 
+              className={`w-full h-full object-cover rounded-full transition-all duration-500 ${isGenerating ? 'blur-sm opacity-50' : 'brightness-100'}`}
             />
-          </div>
-          <div className="absolute -bottom-2 -right-2 bg-purple-600 p-2 rounded-full border border-slate-900 shadow-lg">
-            <Sparkles size={16} className="text-white" />
           </div>
         </div>
 
@@ -42,11 +78,11 @@ const Hero: React.FC = () => {
         </div>
         
         <h1 className="text-5xl md:text-8xl font-orbitron font-bold tracking-tight leading-none">
-          <span className="block text-slate-100 mb-2">我是 Sigrid Peng</span>
+          <span className="block text-slate-100 mb-2">Sigrid Peng</span>
         </h1>
 
-        <p className="text-sm md:text-base text-slate-400 max-w-xl mx-auto leading-relaxed tracking-wider opacity-80">
-          穿梭於實境與數位的敘事者
+        <p className="text-sm md:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed tracking-wider opacity-80">
+          具遊戲思維的 Android 工程師｜解謎 × 劇本 × App互動
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-6">
@@ -59,7 +95,7 @@ const Hero: React.FC = () => {
             <ChevronDown size={20} className="group-hover:translate-y-1 transition-transform" />
           </a>
           <a 
-            href="mailto:sigridpeng@gmail.com" 
+            href="mailto:sigridpeng.dev@gmail.com" 
             className="w-full sm:w-auto px-8 py-4 bg-transparent border-2 border-slate-700 hover:border-cyan-500 hover:text-cyan-400 text-slate-300 font-bold rounded-xl transition-all duration-300"
           >
             與我聊聊
