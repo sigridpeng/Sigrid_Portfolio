@@ -1,12 +1,11 @@
 
-import React, { useState, useEffect } from 'react';
-import { ChevronDown, Sparkles, RefreshCw, Loader2 } from 'lucide-react';
-import { GoogleGenAI } from '@google/genai';
+import React from 'react';
+import { ChevronDown } from 'lucide-react';
 
 const Hero: React.FC = () => {
   // Updated initial state to the user provided image URL
-  const [avatarUrl, setAvatarUrl] = useState('https://media.cake.me/image/upload/s--psgFJFLc--/c_fill,g_face,h_300,w_300/v1667312104/ykeypc13aeu28qk3uwcw.jpg');
-  const [isGenerating, setIsGenerating] = useState(false);
+  const avatarUrl = 'https://media.cake.me/image/upload/s--psgFJFLc--/c_fill,g_face,h_300,w_300/v1667312104/ykeypc13aeu28qk3uwcw.jpg';
+  const isGenerating = false;
 
   const scrollToPortfolio = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -16,40 +15,6 @@ const Hero: React.FC = () => {
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
       window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-    }
-  };
-
-  const generateAIAvatar = async () => {
-    setIsGenerating(true);
-    try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash-image',
-        contents: {
-          parts: [
-            {
-              text: 'An elegant and minimalist artistic silhouette portrait of a woman with long hair and wearing glasses. The silhouette is a deep dark shape, set against a vibrant, glowing neon purple and cyan background with soft cinematic lighting. Vector-inspired professional style, clean lines, high detail, 1:1 aspect ratio, high resolution.',
-            },
-          ],
-        },
-        config: {
-          imageConfig: {
-            aspectRatio: "1:1"
-          }
-        }
-      });
-
-      for (const part of response.candidates?.[0]?.content?.parts || []) {
-        if (part.inlineData) {
-          const base64Data = part.inlineData.data;
-          setAvatarUrl(`data:image/png;base64,${base64Data}`);
-          break;
-        }
-      }
-    } catch (error) {
-      console.error('Failed to generate avatar:', error);
-    } finally {
-      setIsGenerating(false);
     }
   };
 
@@ -65,9 +30,9 @@ const Hero: React.FC = () => {
         {/* Avatar Area */}
         <div className="relative inline-block mb-4 group">
           <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-2 border-cyan-500/50 p-1 bg-slate-900/50 shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-transform duration-500 group-hover:scale-105">
-            <img 
-              src={avatarUrl} 
-              alt="Sigrid Peng Profile" 
+            <img
+              src={avatarUrl}
+              alt="Sigrid Peng Profile"
               className={`w-full h-full object-cover rounded-full transition-all duration-500 ${isGenerating ? 'blur-sm opacity-50' : 'brightness-100'}`}
             />
           </div>
@@ -76,7 +41,7 @@ const Hero: React.FC = () => {
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/50 border border-slate-800 text-[10px] font-semibold tracking-widest text-purple-400 uppercase">
           Welcome to my digital realm
         </div>
-        
+
         <h1 className="text-5xl md:text-8xl font-orbitron font-bold tracking-tight leading-none">
           <span className="block text-slate-100 mb-2">Sigrid Peng</span>
         </h1>
@@ -86,16 +51,16 @@ const Hero: React.FC = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-6">
-          <a 
-            href="#portfolio" 
+          <a
+            href="#portfolio"
             onClick={scrollToPortfolio}
             className="w-full sm:w-auto px-8 py-4 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl shadow-lg transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2 group neon-border-purple"
           >
             探索我的作品集
             <ChevronDown size={20} className="group-hover:translate-y-1 transition-transform" />
           </a>
-          <a 
-            href="mailto:sigridpeng.dev@gmail.com" 
+          <a
+            href="mailto:sigridpeng.dev@gmail.com"
             className="w-full sm:w-auto px-8 py-4 bg-transparent border-2 border-slate-700 hover:border-cyan-500 hover:text-cyan-400 text-slate-300 font-bold rounded-xl transition-all duration-300"
           >
             與我聊聊
