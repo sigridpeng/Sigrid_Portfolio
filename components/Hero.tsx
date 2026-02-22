@@ -2,9 +2,11 @@
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
 
+import avatar from '../大頭照.jpg';
+
 const Hero: React.FC = () => {
   // Updated initial state to the user provided image URL
-  const avatarUrl = 'https://media.cake.me/image/upload/s--psgFJFLc--/c_fill,g_face,h_300,w_300/v1667312104/ykeypc13aeu28qk3uwcw.jpg';
+  const avatarUrl = avatar;
   const isGenerating = false;
 
   const scrollToPortfolio = (e: React.MouseEvent<HTMLAnchorElement>) => {

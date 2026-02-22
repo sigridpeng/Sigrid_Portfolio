@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import { Category } from '../types';
 import { PROJECTS } from '../constants';
-import { ExternalLink, Layers, Box, Smartphone } from 'lucide-react';
+import { ExternalLink, Layers, Box, Smartphone, Trophy } from 'lucide-react';
 
 const Portfolio: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Category | 'ALL'>('ALL');
@@ -68,6 +68,15 @@ const Portfolio: React.FC = () => {
                   {project.category}
                 </span>
               </div>
+
+              {project.isAwardWinning && (
+                <div className="absolute top-4 right-4">
+                  <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-500/10 backdrop-blur-md border border-amber-500/50 rounded-full shadow-[0_0_10px_rgba(245,158,11,0.2)]">
+                    <Trophy size={14} className="text-amber-400 fill-amber-400" />
+                    <span className="text-amber-400 text-[10px] font-bold tracking-tight">得獎作品</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="p-6 space-y-4">
